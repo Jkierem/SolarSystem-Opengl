@@ -117,6 +117,7 @@ void Utils::drawTrianglePyramid( Vector colors[4] ){
 
   glEnd();
 }
+
 void Utils::drawPrism( Vector colors[6] ){
   glBegin(GL_QUADS);
 
@@ -389,6 +390,7 @@ void Utils::drawCross( Vector colors[6]){
 
 void Utils::drawOctahedron(){}
 void Utils::drawDreidelish(){}
+
 void Utils::drawMocho( Vector colors[4] ){
   glBegin(GL_TRIANGLES);
     setColor( colors[0] );
@@ -425,10 +427,12 @@ void Utils::drawMocho( Vector colors[4] ){
 
 void Utils::drawTrafficCone(){
   Vector c[4] = { Vector(1,0.75,0),Vector(1,0,0),Vector(1,0,0),Vector(0.8,0.2,0)};
+  glPushMatrix();
   for( int i = 0 ; i < 4 ; i++ ){
     drawMocho(c);
     rotate(Vector(0,90,0));
   }
+  glPopMatrix();
 }
 
 void Utils::drawHouse( Vector colors[6] ){
