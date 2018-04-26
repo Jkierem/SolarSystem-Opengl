@@ -4,9 +4,11 @@
 
 #include "./Utils/Utils.h"
 
+float angle = 0;
+
 void Timer( int i ){
   glutPostRedisplay();
-  glutTimerFunc( 1000, Timer, 0);
+  glutTimerFunc( 1000/60 , Timer, 0);
 }
 
 void init(){
@@ -19,11 +21,15 @@ void display(){
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
   glColor3f(1,0,0);
-  Utils::rotate(Vector(0,0,90));
-  Utils::translate(Vector(0,0,-10));
-  Utils::scale(Vector(1,2,1));
-  Utils::drawPyramid();
+  Utils::translate(Vector(0,0,-1000));
+  Utils::rotate(Vector(angle,angle,0));
+  Utils::scale(Vector(50,50,50));
+  Vector colors[6] = { Vector(1,0,1) , Vector(1,0,0) , Vector(0,1,0) , Vector(0,0,1) , Vector(0,1,1) , Vector(1,1,0) };
+  Utils::drawTrafficCone();
+  Utils::scale(Vector(10,10,1));
+  Utils::drawCircle();
   glutSwapBuffers();
+  angle+=1.0f;
 }
 
 void reshape( int width , int height ){

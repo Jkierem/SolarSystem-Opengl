@@ -1,1 +1,1 @@
-g++ -o SolarSystem *.cpp */*.cpp -lGL -lGLU -lglut
+g++ -o System *.cpp */*.cpp -lGL -lGLU -lglut
