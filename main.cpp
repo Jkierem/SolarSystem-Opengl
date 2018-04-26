@@ -22,10 +22,10 @@ void display(){
   glLoadIdentity();
   glColor3f(1,0,0);
   Utils::translate(Vector(0,0,-1000));
-  Utils::rotate(Vector(angle,angle,0));
+  Utils::rotate(Vector(0,angle,0));
   Utils::scale(Vector(50,50,50));
   Vector colors[6] = { Vector(1,0,1) , Vector(1,0,0) , Vector(0,1,0) , Vector(0,0,1) , Vector(0,1,1) , Vector(1,1,0) };
-  Utils::drawTrafficCone();
+  Utils::drawDreidelish(colors);
   Utils::scale(Vector(10,10,1));
   Utils::drawCircle();
   glutSwapBuffers();

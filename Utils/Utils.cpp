@@ -17,6 +17,10 @@ void Utils::rotate( Vector r ){
   glRotatef( r.z , 0 , 0 , 1 );
 }
 
+void Utils::rotate( float x , float y , float z ){
+  rotate(Vector(x,y,z));
+}
+
 void Utils::scale( Vector s ){
   glScalef( s.x , s.y , s.z );
 }
@@ -49,7 +53,6 @@ std::vector<Vector> Utils::getCirclePoints( float radius , float segs ){
   return Utils::getEllipsePoints(radius,radius,segs);
 }
 
-//simplest of figures (orbits)
 void Utils::drawCircle(){
   std::vector<Vector> v = Utils::getEllipsePoints(1,1);
   glBegin( GL_POINTS );
@@ -60,146 +63,96 @@ void Utils::drawCircle(){
   glEnd();
 }
 
-//simple figures
-void Utils::drawPyramid( Vector colors[5] ){
-  glBegin(GL_QUADS);
-    setColor( colors[0] );
-    glVertex3f(-1,0,1);
-    glVertex3f(1,0,1);
-    glVertex3f(1,0,-1);
-    glVertex3f(-1,0,-1);
-  glEnd();
-  glBegin(GL_TRIANGLES);
-    setColor( colors[1] );
-    glVertex3f(-1,0,1);
-    glVertex3f(1,0,1);
-    glVertex3f(0,1,0);
-
-    setColor( colors[2] );
-    glVertex3f(1,0,1);
-    glVertex3f(1,0,-1);
-    glVertex3f(0,1,0);
-
-    setColor( colors[3] );
-    glVertex3f(1,0,-1);
-    glVertex3f(-1,0,-1);
-    glVertex3f(0,1,0);
-
-    setColor( colors[4] );
-    glVertex3f(-1,0,-1);
-    glVertex3f(-1,0,1);
-    glVertex3f(0,1,0);
-  glEnd();
+void Utils::drawPyramid( Vector colors[3] , bool closed ){
+  glPushMatrix();
+  for( int i = 0 ; i < 4 ; i++){
+    glBegin(GL_TRIANGLES);
+      setColor( colors[0] );
+      glVertex3f(-1,0,1);
+      glVertex3f(1,0,1);
+      setColor( colors[1] );
+      glVertex3f(0,1,0);
+    glEnd();
+    rotate(Vector(0,90,0));
+  }
+  glPopMatrix();
+  if( closed ){
+    glBegin(GL_QUADS);
+      setColor( colors[2] );
+      glVertex3f(-1,0,1);
+      glVertex3f(1,0,1);
+      glVertex3f(1,0,-1);
+      glVertex3f(-1,0,-1);
+    glEnd();
+  }
 }
 
-void Utils::drawTrianglePyramid( Vector colors[4] ){
+void Utils::drawTrianglePyramid( Vector colors[4] , bool closed ){
   float root2 = sqrt(2);
   glBegin(GL_TRIANGLES);
-    setColor( colors[0] );
-    glVertex3f(0,0,1);
-    glVertex3f(-root2,0,-root2);
-    glVertex3f(root2,0,-root2);
+    if(closed){
+      setColor( colors[0] );
+      glVertex3f(0,0,1);
+      glVertex3f(-root2,0,-root2);
+      glVertex3f(root2,0,-root2);
+    }
 
     setColor( colors[1] );
     glVertex3f(0,0,1);
     glVertex3f(-root2,0,-root2);
-    glVertex3f(0,root2,0);
+    glVertex3f(0,2,0);
 
     setColor( colors[2] );
     glVertex3f(-root2,0,-root2);
     glVertex3f(root2,0,-root2);
-    glVertex3f(0,root2,0);
+    glVertex3f(0,2,0);
 
     setColor( colors[3] );
     glVertex3f(root2,0,-root2);
     glVertex3f(0,0,1);
-    glVertex3f(0,root2,0);
+    glVertex3f(0,2,0);
 
   glEnd();
 }
 
 void Utils::drawPrism( Vector colors[6] ){
-  glBegin(GL_QUADS);
-
-    setColor( colors[0] );
-    glVertex3f(-2,1,-1);
-    glVertex3f(-2,1,1);
-    glVertex3f(-2,-1,1);
-    glVertex3f(-2,-1,-1);
-
-    setColor( colors[1] );
-    glVertex3f(2,1,-1);
-    glVertex3f(2,1,1);
-    glVertex3f(2,-1,1);
-    glVertex3f(2,-1,-1);
-
-    setColor( colors[2] );
-    glVertex3f(-2,1,1);
-    glVertex3f(-2,-1,1);
-    glVertex3f(2,-1,1);
-    glVertex3f(2,1,1);
-
-    setColor( colors[3] );
-    glVertex3f(-2,1,-1);
-    glVertex3f(-2,-1,-1);
-    glVertex3f(2,-1,-1);
-    glVertex3f(2,1,-1);
-
-    setColor( colors[4] );
-    glVertex3f(2,1,1);
-    glVertex3f(2,1,-1);
-    glVertex3f(-2,1,-1);
-    glVertex3f(-2,1,1);
-
-    setColor( colors[5] );
-    glVertex3f(2,-1,1);
-    glVertex3f(2,-1,-1);
-    glVertex3f(-2,-1,-1);
-    glVertex3f(-2,-1,1);
-
-  glEnd();
+  glPushMatrix();
+  scale(Vector(2,1,1));
+  drawCube(colors);
+  glPopMatrix();
 }
 
 void Utils::drawCube( Vector colors[6] ){
-  glBegin(GL_QUADS);
-
-    setColor( colors[0] );
-    glVertex3f(-1,1,-1);
-    glVertex3f(-1,1,1);
-    glVertex3f(-1,-1,1);
-    glVertex3f(-1,-1,-1);
-
-    setColor( colors[1] );
-    glVertex3f(1,1,-1);
-    glVertex3f(1,1,1);
-    glVertex3f(1,-1,1);
-    glVertex3f(1,-1,-1);
-
-    setColor( colors[2] );
-    glVertex3f(-1,1,1);
-    glVertex3f(-1,-1,1);
-    glVertex3f(1,-1,1);
-    glVertex3f(1,1,1);
-
-    setColor( colors[3] );
-    glVertex3f(-1,1,-1);
-    glVertex3f(-1,-1,-1);
-    glVertex3f(1,-1,-1);
-    glVertex3f(1,1,-1);
-
-    setColor( colors[4] );
-    glVertex3f(1,1,1);
-    glVertex3f(1,1,-1);
-    glVertex3f(-1,1,-1);
-    glVertex3f(-1,1,1);
-
-    setColor( colors[5] );
-    glVertex3f(1,-1,1);
-    glVertex3f(1,-1,-1);
-    glVertex3f(-1,-1,-1);
-    glVertex3f(-1,-1,1);
-
-  glEnd();
+  glPushMatrix();
+  for( int i = 0 ; i < 4 ; i++){
+    glBegin(GL_QUADS);
+      setColor( colors[i] );
+      glVertex3f(-1,1,-1);
+      glVertex3f(-1,1,1);
+      glVertex3f(-1,-1,1);
+      glVertex3f(-1,-1,-1);
+    glEnd();
+    rotate(Vector(0,90,0));
+  }
+  glPopMatrix();
+  glPushMatrix();
+    rotate(Vector(0,0,90));
+    glBegin(GL_QUADS);
+      setColor( colors[4] );
+      glVertex3f(-1,1,-1);
+      glVertex3f(-1,1,1);
+      glVertex3f(-1,-1,1);
+      glVertex3f(-1,-1,-1);
+    glEnd();
+    rotate(Vector(0,0,-180));
+    glBegin(GL_QUADS);
+      setColor( colors[5] );
+      glVertex3f(-1,1,-1);
+      glVertex3f(-1,1,1);
+      glVertex3f(-1,-1,1);
+      glVertex3f(-1,-1,-1);
+    glEnd();
+  glPopMatrix();
 }
 
 void Utils::drawTriangularPrism( Vector colors[5] ){
@@ -238,47 +191,21 @@ void Utils::drawTriangularPrism( Vector colors[5] ){
   glEnd();
 }
 
-//complex figures
 void Utils::drawSpinningTop( Vector colors[6] ){
-  float root1 = sqrt(1);
-  glBegin(GL_TRIANGLES);
-    setColor( colors[0] );
-    glVertex3f(0,root1,0);
-    glVertex3f(0,0,1);
-    glVertex3f(-root1,0,-root1);
-
-    setColor( colors[1] );
-    glVertex3f(0,root1,0);
-    glVertex3f(0,0,1);
-    glVertex3f(root1,0,-root1);
-
-    setColor( colors[2] );
-    glVertex3f(0,root1,0);
-    glVertex3f(root1,0,-root1);
-    glVertex3f(-root1,0,-root1);
-
-    setColor( colors[3] );
-    glVertex3f(0,-root1,0);
-    glVertex3f(0,0,1);
-    glVertex3f(-root1,0,-root1);
-
-    setColor( colors[4] );
-    glVertex3f(0,-root1,0);
-    glVertex3f(0,0,1);
-    glVertex3f(root1,0,-root1);
-
-    setColor( colors[5] );
-    glVertex3f(0,-root1,0);
-    glVertex3f(root1,0,-root1);
-    glVertex3f(-root1,0,-root1);
-
-  glEnd();
+  Vector c2[4] = { colors[0] , colors[0] , colors[4] , colors[5]};
+  glPushMatrix();
+    drawTrianglePyramid(colors,false);
+    rotate(Vector(0,0,180));
+    drawTrianglePyramid(c2,false);
+  glPopMatrix();
 }
 
 void Utils::drawCross( Vector colors[6]){
+  glPushMatrix();
+  for( int i = 0 ; i < 2 ; i++){
     glBegin(GL_POLYGON);
 
-      setColor( colors [0] );
+      setColor( colors [i] );
       glVertex3f(-1,1,1);
       glVertex3f(-1,2,1);
       glVertex3f(1,2,1);
@@ -293,25 +220,9 @@ void Utils::drawCross( Vector colors[6]){
       glVertex3f(-2,1,1);
 
     glEnd();
-
-    glBegin(GL_POLYGON);
-
-      setColor( colors [1] );
-      glVertex3f(-1,1,-1);
-      glVertex3f(-1,2,-1);
-      glVertex3f(1,2,-1);
-      glVertex3f(1,1,-1);
-      glVertex3f(2,1,-1);
-      glVertex3f(2,-1,-1);
-      glVertex3f(1,-1,-1);
-      glVertex3f(1,-2,-1);
-      glVertex3f(-1,-2,-1);
-      glVertex3f(-1,-1,-1);
-      glVertex3f(-2,-1,-1);
-      glVertex3f(-2,1,-1);
-
-    glEnd();
-
+    rotate(Vector(0,180,0));
+  }
+  glPopMatrix();
     glBegin(GL_QUADS);
 
       setColor( colors[2] );
@@ -388,8 +299,42 @@ void Utils::drawCross( Vector colors[6]){
     glEnd();
 }
 
-void Utils::drawOctahedron(){}
-void Utils::drawDreidelish(){}
+void Utils::drawOctahedron( Vector colors[2] ){
+  glPushMatrix();
+  drawPyramid(colors,false);
+  rotate(180,90,0);
+  drawPyramid(colors,false);
+  glPopMatrix();
+}
+
+void Utils::drawDreidelish( Vector colors[3] ){
+  glPushMatrix();
+  for( int i = 0 ; i < 4 ; i++){
+    glBegin(GL_TRIANGLES);
+      setColor( colors[0] );
+      glVertex3f(-2,0,0);
+      setColor( colors[1] );
+      glVertex3f(-1,-1,1);
+      glVertex3f(-1,1,1);
+
+      setColor( colors[1] );
+      glVertex3f(1,-1,1);
+      glVertex3f(1,1,1);
+      setColor( colors[2] );
+      glVertex3f(2,0,0);
+    glEnd();
+
+    glBegin(GL_QUADS);
+      setColor(colors[1]);
+      glVertex3f(1,-1,1);
+      glVertex3f(1,1,1);
+      glVertex3f(-1,1,1);
+      glVertex3f(-1,-1,1);
+    glEnd();
+    rotate(90,0,0);
+  }
+  glPopMatrix();
+}
 
 void Utils::drawMocho( Vector colors[4] ){
   glBegin(GL_TRIANGLES);
