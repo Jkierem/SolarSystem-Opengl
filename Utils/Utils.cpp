@@ -494,7 +494,9 @@ void Utils::drawHouse( Vector colors[6] ){
 }
 
 void Utils::drawStar( Vector colors[6] ){
+  glPushMatrix();
   drawCube( colors );
   rotate(Vector(45,0,0));
   drawCube( colors );
+  glPopMatrix();
 }
