@@ -12,13 +12,17 @@ void Utils::translate( Vector t ){
 }
 
 void Utils::rotate( Vector r ){
-  glRotatef( r.x , 1 , 0 , 0 );
-  glRotatef( r.y , 0 , 1 , 0 );
-  glRotatef( r.z , 0 , 0 , 1 );
+  rotate(r.x,r.y,r.z);
 }
 
 void Utils::rotate( float x , float y , float z ){
-  rotate(Vector(x,y,z));
+  glRotatef( x , 1 , 0 , 0 );
+  glRotatef( y , 0 , 1 , 0 );
+  glRotatef( z , 0 , 0 , 1 );
+}
+
+void Utils::rotate( float angle , Vector axis ){
+  glRotatef( angle , axis.x , axis.y , axis.z );
 }
 
 void Utils::scale( Vector s ){
@@ -37,6 +41,15 @@ void Utils::setColor( Vector color ){
   glColor3f( color.x , color.y , color.z );
 }
 
+void Utils::drawPoints( std::vector<Vector> points, Vector color ){
+  setColor( color );
+  glBegin( GL_LINE_STRIP );
+  for( Vector p : points ){
+    glVertex3f(p.x,p.y,p.z);
+  }
+  glEnd();
+}
+
 //util utils funks
 std::vector<Vector> Utils::getEllipsePoints( float rx , float ry , float segs ){
   std::vector<Vector> v;
@@ -53,14 +66,9 @@ std::vector<Vector> Utils::getCirclePoints( float radius , float segs ){
   return Utils::getEllipsePoints(radius,radius,segs);
 }
 
-void Utils::drawCircle(){
+void Utils::drawCircle( Vector color ){
   std::vector<Vector> v = Utils::getEllipsePoints(1,1);
-  glBegin( GL_POINTS );
-  for( int i = 0 ; i < v.size() ; i++ ){
-    Vector p = v[i];
-    glVertex3f(p.x,p.y,p.z);
-  }
-  glEnd();
+  drawPoints(v, color);
 }
 
 void Utils::drawPyramid( Vector colors[3] , bool closed ){

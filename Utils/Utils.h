@@ -22,16 +22,18 @@ namespace Utils {
   void translate( Vector t );
   void rotate( Vector r );
   void rotate( float x , float y , float z );
+  void rotate( float angle , Vector axis );
   void scale( Vector s );
   void setCamera( Vector eye , Vector center , Vector up );
   void setColor( Vector color );
+  void drawPoints( std::vector<Vector> points, Vector color );
 
   //util utils funks
   std::vector<Vector> getEllipsePoints( float rx , float ry , float segs=720);
   std::vector<Vector> getCirclePoints( float radius , float segs=720 );
 
   //simplest of figures (orbits)
-  void drawCircle();
+  void drawCircle( Vector color );
 
   //simple figures
   void drawPyramid( Vector colors[3] , bool closed=true);
